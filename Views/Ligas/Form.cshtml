@@ -1,0 +1,10 @@
+@model Vencedores.ViewModels.LigaForm
+@{
+    var editar = Model.IdLiga != 0;
+    ViewData["Title"] = editar ? "Editar liga" : "Nova liga";
+}
+<div class="page-heading"><div><p class="eyebrow">PONTOS CORRIDOS</p><h1>@ViewData["Title"]</h1><p class="lead">Uma liga pode estar ligada a um único torneio.</p></div></div>
+<form asp-action="@(editar ? "Edit" : "Create")" asp-route-id="@(editar ? (int?)Model.IdLiga : null)" method="post" asp-antiforgery="true" class="panel form-panel"><input asp-for="IdLiga" type="hidden" /><div asp-validation-summary="ModelOnly" class="validation"></div>
+<div class="field"><label asp-for="Nome"></label><input asp-for="Nome" maxlength="100" /><span asp-validation-for="Nome" class="validation"></span></div>
+<div class="field"><label asp-for="IdTorneio">Torneio</label><select asp-for="IdTorneio" asp-items="ViewBag.Torneios" disabled="@editar"><option value="0">Selecione um torneio</option></select><span asp-validation-for="IdTorneio" class="validation"></span>@if (editar) { <input type="hidden" name="IdTorneio" value="@Model.IdTorneio" /> }</div>
+<div class="form-actions"><a class="btn btn-secondary" asp-action="Index">Cancelar</a><button class="btn btn-primary" type="submit">Salvar liga</button></div></form>

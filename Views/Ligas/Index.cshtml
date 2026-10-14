@@ -1,0 +1,16 @@
+@model IEnumerable<Vencedores.Models.Liga>
+@{
+    ViewData["Title"] = "Ligas";
+}
+<div class="page-heading"><div><p class="eyebrow">PONTOS CORRIDOS</p><h1>Ligas</h1><p class="lead">Inscrições, calendário e classificação de cada competição.</p></div><a class="btn btn-primary" asp-controller="Torneios" asp-action="Create">+ Novo torneio</a></div>
+<div class="panel"><div class="panel-heading"><h2>Ligas cadastradas</h2></div>
+@if (!Model.Any())
+{
+    <div class="empty-state"><strong>Nenhuma liga encontrada</strong><p>Ao cadastrar um novo torneio, a liga será criada automaticamente.</p></div>
+}
+else
+{
+    <div class="table-wrap"><table><thead><tr><th>Liga</th><th>Torneio</th><th>Times</th><th class="actions-col">Ações</th></tr></thead><tbody>
+    @foreach (var l in Model) { <tr><td><a class="strong-link" asp-action="Details" asp-route-id="@l.IdLiga">@l.Nome</a></td><td>@l.IdTorneioNavigation.Nome</td><td>@l.LigaTimes.Count</td><td class="actions-col"><a asp-action="Details" asp-route-id="@l.IdLiga">Ver</a><a asp-action="Classificacao" asp-route-id="@l.IdLiga">Tabela</a><a asp-action="Edit" asp-route-id="@l.IdLiga">Editar</a><a class="link-danger" asp-action="Delete" asp-route-id="@l.IdLiga">Excluir</a></td></tr> }
+    </tbody></table></div>
+}</div>

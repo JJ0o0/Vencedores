@@ -1,0 +1,6 @@
+@model Vencedores.Models.Jogadore
+@{
+    ViewData["Title"] = "Excluir jogador";
+}
+<div class="page-heading"><div><p class="eyebrow">ELENCOS</p><h1>Excluir jogador</h1></div></div>
+<div class="panel form-panel"><h2>Excluir @Model.Nome?</h2><p>Esse jogador pertence ao time <strong>@Model.IdTimeNavigation.Nome</strong>. A exclusão pode ser bloqueada se o time ficar com menos de dois atletas em torneio em andamento.</p><form asp-action="Delete" asp-route-id="@Model.IdJogador" method="post" asp-antiforgery="true" class="form-actions"><a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model.IdJogador">Cancelar</a><button class="btn btn-danger" type="submit">Excluir jogador</button></form></div>

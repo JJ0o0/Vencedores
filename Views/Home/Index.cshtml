@@ -1,0 +1,53 @@
+@model Vencedores.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Visão geral";
+}
+<div class="page-heading">
+    <div><p class="eyebrow">SEU PAINEL</p><h1>Bem-vindo ao Vencedores</h1><p class="lead">Tudo o que você precisa para organizar seus campeonatos em um só lugar.</p></div>
+    <a class="btn btn-primary" asp-controller="Torneios" asp-action="Create">+ Novo torneio</a>
+</div>
+<div class="stats-grid">
+    <a class="stat-card" asp-controller="Torneios" asp-action="Index"><span>Torneios</span><strong>@Model.TotalTorneios</strong><small>Cadastrados</small></a>
+    <a class="stat-card" asp-controller="Times" asp-action="Index"><span>Times</span><strong>@Model.TotalTimes</strong><small>Equipes no sistema</small></a>
+    <a class="stat-card" asp-controller="Jogadores" asp-action="Index"><span>Jogadores</span><strong>@Model.TotalJogadores</strong><small>Atletas cadastrados</small></a>
+    <a class="stat-card" asp-controller="Partidas" asp-action="Index"><span>Partidas encerradas</span><strong>@Model.PartidasFinalizadas</strong><small>Resultados registrados</small></a>
+</div>
+<div class="dashboard-grid">
+    <section class="panel">
+        <div class="panel-heading"><div><h2>Torneios recentes</h2><p>Acompanhe as competições cadastradas</p></div><a class="text-link" asp-controller="Torneios" asp-action="Index">Ver todos →</a></div>
+        @if (!Model.Torneios.Any())
+        {
+            <div class="empty-state"><strong>Nenhum torneio por enquanto</strong><p>Comece criando uma competição.</p><a class="btn btn-secondary" asp-controller="Torneios" asp-action="Create">Criar torneio</a></div>
+        }
+        else
+        {
+            <div class="list-stack">
+                @foreach (var t in Model.Torneios)
+                {
+                    <a class="list-row" asp-controller="Torneios" asp-action="Details" asp-route-id="@t.IdTorneio">
+                        <span class="mini-icon">T</span><span class="grow"><strong>@t.Nome</strong><small>@t.DataInicio.ToString("dd/MM/yyyy") — @t.DataFinal.ToString("dd/MM/yyyy")</small></span><span class="status status-@t.Status.ToLowerInvariant()">@t.Status.Replace("_", " ")</span><span class="row-arrow">›</span>
+                    </a>
+                }
+            </div>
+        }
+    </section>
+    <section class="panel">
+        <div class="panel-heading"><div><h2>Últimas partidas</h2><p>Jogos registrados no sistema</p></div><a class="text-link" asp-controller="Partidas" asp-action="Index">Ver todas →</a></div>
+        @if (!Model.Partidas.Any())
+        {
+            <div class="empty-state"><strong>Sem partidas cadastradas</strong><p>Inscreva times em uma liga e organize os primeiros jogos.</p></div>
+        }
+        else
+        {
+            <div class="list-stack">
+                @foreach (var j in Model.Partidas)
+                {
+                    <a class="match-compact" asp-controller="Partidas" asp-action="Details" asp-route-id="@j.IdPartida">
+                        <span class="grow"><small>@j.Liga · @j.DataPartida.ToString("dd/MM/yyyy")</small><strong>@j.Mandante <span class="muted">×</span> @j.Visitante</strong></span>
+                        <span class="match-score">@(j.Status == "FINALIZADA" ? $"{j.PontosMandante} : {j.PontosVisitante}" : "– : –")</span>
+                    </a>
+                }
+            </div>
+        }
+    </section>
+</div>

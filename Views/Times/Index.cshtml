@@ -1,0 +1,21 @@
+@model IEnumerable<Vencedores.Models.Time>
+@{
+    ViewData["Title"] = "Times";
+}
+<div class="page-heading"><div><p class="eyebrow">EQUIPES</p><h1>Times</h1><p class="lead">Cadastre e gerencie as equipes dos seus torneios.</p></div><a class="btn btn-primary" asp-action="Create">+ Novo time</a></div>
+<div class="panel">
+    <div class="panel-heading"><h2>Times cadastrados</h2><form method="get" class="search-form"><input type="search" name="busca" value="@ViewBag.Busca" placeholder="Buscar time ou cidade" aria-label="Buscar time" /><button class="btn btn-secondary" type="submit">Buscar</button></form></div>
+    @if (!Model.Any())
+    {
+        <div class="empty-state"><strong>Nenhum time encontrado</strong><p>Cadastre uma equipe para começar.</p></div>
+    }
+    else
+    {
+        <div class="table-wrap"><table><thead><tr><th>Time</th><th>Sigla</th><th>Cidade</th><th class="actions-col">Ações</th></tr></thead><tbody>
+            @foreach (var item in Model)
+            {
+                <tr><td><a class="entity-link" asp-action="Details" asp-route-id="@item.IdTime"><span class="team-avatar">@item.Nome.Substring(0, 1).ToUpperInvariant()</span>@item.Nome</a></td><td>@(item.Sigla ?? "—")</td><td>@(item.Cidade ?? "—")</td><td class="actions-col"><a asp-action="Details" asp-route-id="@item.IdTime">Ver</a><a asp-action="Edit" asp-route-id="@item.IdTime">Editar</a><a class="link-danger" asp-action="Delete" asp-route-id="@item.IdTime">Excluir</a></td></tr>
+            }
+        </tbody></table></div>
+    }
+</div>

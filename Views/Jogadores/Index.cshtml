@@ -1,0 +1,16 @@
+@model IEnumerable<Vencedores.Models.Jogadore>
+@{
+    ViewData["Title"] = "Jogadores";
+}
+<div class="page-heading"><div><p class="eyebrow">ELENCOS</p><h1>Jogadores</h1><p class="lead">Gerencie os atletas de todas as equipes.</p></div><a class="btn btn-primary" asp-action="Create">+ Novo jogador</a></div>
+<div class="panel"><div class="panel-heading"><h2>Atletas cadastrados</h2><form method="get" class="search-form"><select name="timeId" asp-items="ViewBag.Times"><option value="">Todos os times</option></select><button class="btn btn-secondary" type="submit">Filtrar</button></form></div>
+@if (!Model.Any())
+{
+    <div class="empty-state"><strong>Sem jogadores para mostrar</strong><p>Cadastre um atleta para preencher o elenco.</p></div>
+}
+else
+{
+    <div class="table-wrap"><table><thead><tr><th>Jogador</th><th>Time</th><th class="actions-col">Ações</th></tr></thead><tbody>
+    @foreach (var j in Model) { <tr><td><a class="strong-link" asp-action="Details" asp-route-id="@j.IdJogador">@j.Nome</a></td><td><a asp-controller="Times" asp-action="Details" asp-route-id="@j.IdTime">@j.IdTimeNavigation.Nome</a></td><td class="actions-col"><a asp-action="Details" asp-route-id="@j.IdJogador">Ver</a><a asp-action="Edit" asp-route-id="@j.IdJogador">Editar</a><a class="link-danger" asp-action="Delete" asp-route-id="@j.IdJogador">Excluir</a></td></tr> }
+    </tbody></table></div>
+}</div>

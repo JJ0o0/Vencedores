@@ -1,0 +1,54 @@
+@{
+    var ativo = ViewContext.RouteData.Values["controller"]?.ToString() ?? "Home";
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] · Vencedores</title>
+    <meta name="theme-color" content="#173e35" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" asp-controller="Home" asp-action="Index">
+                <span class="brand-mark">V</span>
+                <span>vencedores<small>gestão esportiva</small></span>
+            </a>
+            <div class="sidebar-label">GERENCIAMENTO</div>
+            <nav class="side-nav" aria-label="Navegação principal">
+                <a asp-controller="Home" asp-action="Index" class="@(ativo == "Home" ? "active" : "")"><span class="nav-symbol">⌂</span> Visão geral</a>
+                <a asp-controller="Torneios" asp-action="Index" class="@(ativo == "Torneios" ? "active" : "")"><span class="nav-symbol">▣</span> Torneios</a>
+                <a asp-controller="Ligas" asp-action="Index" class="@(ativo == "Ligas" ? "active" : "")"><span class="nav-symbol">▥</span> Ligas</a>
+                <a asp-controller="Partidas" asp-action="Index" class="@(ativo == "Partidas" ? "active" : "")"><span class="nav-symbol">◷</span> Partidas</a>
+                <a asp-controller="Times" asp-action="Index" class="@(ativo == "Times" ? "active" : "")"><span class="nav-symbol">◈</span> Times</a>
+                <a asp-controller="Jogadores" asp-action="Index" class="@(ativo == "Jogadores" ? "active" : "")"><span class="nav-symbol">♙</span> Jogadores</a>
+                <a asp-controller="Sedes" asp-action="Index" class="@(ativo == "Sedes" ? "active" : "")"><span class="nav-symbol">⌖</span> Sedes</a>
+            </nav>
+            <div class="sidebar-bottom">Organize. Jogue. Vença.<span>Vencedores · 2026</span></div>
+        </aside>
+        <div class="workspace">
+            <header class="topbar">
+                <div><span class="topbar-eyebrow">PAINEL DE CONTROLE</span><strong>@ViewData["Title"]</strong></div>
+                <span class="topbar-tag">Pontos corridos</span>
+            </header>
+            <main class="content">
+                @if (TempData["Sucesso"] is string sucesso)
+                {
+                    <div class="alert alert-success" role="status">@sucesso</div>
+                }
+                @if (TempData["Erro"] is string erro)
+                {
+                    <div class="alert alert-error" role="alert">@erro</div>
+                }
+                @RenderBody()
+            </main>
+            <footer class="footer">Vencedores · Sistema de gerenciamento de torneios</footer>
+        </div>
+    </div>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

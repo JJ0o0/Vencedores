@@ -1,0 +1,12 @@
+@model Vencedores.ViewModels.JogadorForm
+@{
+    var editar = Model.IdJogador != 0;
+    ViewData["Title"] = editar ? "Editar jogador" : "Novo jogador";
+}
+<div class="page-heading"><div><p class="eyebrow">ELENCOS</p><h1>@ViewData["Title"]</h1><p class="lead">Associe o jogador ao seu time.</p></div></div>
+<form asp-action="@(editar ? "Edit" : "Create")" asp-route-id="@(editar ? (int?)Model.IdJogador : null)" method="post" asp-antiforgery="true" class="panel form-panel">
+<input asp-for="IdJogador" type="hidden" /><div asp-validation-summary="ModelOnly" class="validation"></div>
+<div class="field"><label asp-for="Nome"></label><input asp-for="Nome" maxlength="100" autofocus /><span asp-validation-for="Nome" class="validation"></span></div>
+<div class="field"><label asp-for="IdTime"></label><select asp-for="IdTime" asp-items="ViewBag.Times"><option value="0">Selecione um time</option></select><span asp-validation-for="IdTime" class="validation"></span></div>
+<div class="form-actions"><a class="btn btn-secondary" asp-action="Index">Cancelar</a><button type="submit" class="btn btn-primary">Salvar jogador</button></div>
+</form>

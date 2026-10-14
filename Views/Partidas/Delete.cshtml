@@ -1,0 +1,6 @@
+@model Vencedores.ViewModels.PartidaRow
+@{
+    ViewData["Title"] = "Excluir partida";
+}
+<div class="page-heading"><div><p class="eyebrow">CALENDÁRIO</p><h1>Excluir partida</h1></div></div>
+<div class="panel form-panel"><h2>@Model.Mandante × @Model.Visitante</h2><p>@Model.Liga · @Model.DataPartida.ToString("dd/MM/yyyy HH:mm")</p><p>A exclusão é permanente. Se a partida estiver finalizada, ela deixará de contar na classificação.</p><form asp-action="Delete" asp-route-id="@Model.IdPartida" method="post" asp-antiforgery="true" class="form-actions"><a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model.IdPartida">Cancelar</a><button class="btn btn-danger" type="submit">Excluir partida</button></form></div>

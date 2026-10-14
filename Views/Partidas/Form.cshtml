@@ -1,0 +1,13 @@
+@model Vencedores.ViewModels.PartidaForm
+@{
+    var editar = Model.IdPartida != 0;
+    ViewData["Title"] = editar ? "Editar partida" : "Nova partida";
+}
+<div class="page-heading"><div><p class="eyebrow">CALENDÁRIO</p><h1>@ViewData["Title"]</h1><p class="lead">Os dois times devem estar inscritos na liga selecionada.</p></div></div>
+<form asp-action="@(editar ? "Edit" : "Create")" asp-route-id="@(editar ? (int?)Model.IdPartida : null)" method="post" asp-antiforgery="true" class="panel form-panel">
+<input asp-for="IdPartida" type="hidden" /><div asp-validation-summary="ModelOnly" class="validation"></div>
+<div class="field"><label asp-for="IdLiga">Liga</label><select asp-for="IdLiga" asp-items="ViewBag.Ligas" id="IdLiga"><option value="0">Selecione a liga</option></select><span asp-validation-for="IdLiga" class="validation"></span></div>
+<div class="form-grid"><div class="field"><label asp-for="IdTimeMandante"></label><select asp-for="IdTimeMandante" asp-items="ViewBag.Times" id="IdTimeMandante"><option value="0">Selecione o mandante</option></select><span asp-validation-for="IdTimeMandante" class="validation"></span></div><div class="field"><label asp-for="IdTimeVisitante"></label><select asp-for="IdTimeVisitante" asp-items="ViewBag.Times" id="IdTimeVisitante"><option value="0">Selecione o visitante</option></select><span asp-validation-for="IdTimeVisitante" class="validation"></span></div></div>
+<div class="form-grid"><div class="field"><label asp-for="IdSede"></label><select asp-for="IdSede" asp-items="ViewBag.Sedes"><option value="0">Selecione a sede</option></select><span asp-validation-for="IdSede" class="validation"></span></div><div class="field"><label asp-for="DataPartida"></label><input asp-for="DataPartida" type="datetime-local" value="@Model.DataPartida.ToString("yyyy-MM-ddTHH:mm")" /><span asp-validation-for="DataPartida" class="validation"></span></div></div>
+<div class="form-actions"><a class="btn btn-secondary" asp-action="Index">Cancelar</a><button class="btn btn-primary" type="submit">Salvar partida</button></div></form>
+<script id="inscricoes-data" type="application/json">@Html.Raw((string)ViewBag.InscricoesJson)</script>

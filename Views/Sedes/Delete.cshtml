@@ -1,0 +1,6 @@
+@model Vencedores.Models.Sede
+@{
+    ViewData["Title"] = "Excluir sede";
+}
+<div class="page-heading"><div><p class="eyebrow">LOCAIS</p><h1>Excluir sede</h1></div></div>
+<div class="panel form-panel"><h2>Excluir @Model.Nome?</h2><p>A sede não poderá ser excluída se estiver vinculada a partidas.</p><form asp-action="Delete" asp-route-id="@Model.IdSede" method="post" asp-antiforgery="true" class="form-actions"><a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model.IdSede">Cancelar</a><button class="btn btn-danger" type="submit">Excluir sede</button></form></div>

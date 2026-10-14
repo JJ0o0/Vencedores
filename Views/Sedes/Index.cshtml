@@ -1,0 +1,16 @@
+@model IEnumerable<Vencedores.Models.Sede>
+@{
+    ViewData["Title"] = "Sedes";
+}
+<div class="page-heading"><div><p class="eyebrow">LOCAIS DE JOGO</p><h1>Sedes</h1><p class="lead">Locais onde as partidas serão realizadas.</p></div><a class="btn btn-primary" asp-action="Create">+ Nova sede</a></div>
+<div class="panel"><div class="panel-heading"><h2>Sedes cadastradas</h2></div>
+@if (!Model.Any())
+{
+    <div class="empty-state"><strong>Nenhuma sede cadastrada</strong><p>Crie uma sede para começar a agendar partidas.</p></div>
+}
+else
+{
+    <div class="table-wrap"><table><thead><tr><th>Sede</th><th>Endereço</th><th>Capacidade</th><th class="actions-col">Ações</th></tr></thead><tbody>
+    @foreach (var s in Model) { <tr><td><a class="strong-link" asp-action="Details" asp-route-id="@s.IdSede">@s.Nome</a></td><td>@(s.Endereco ?? "—")</td><td>@(s.Capacidade?.ToString() ?? "—")</td><td class="actions-col"><a asp-action="Details" asp-route-id="@s.IdSede">Ver</a><a asp-action="Edit" asp-route-id="@s.IdSede">Editar</a><a class="link-danger" asp-action="Delete" asp-route-id="@s.IdSede">Excluir</a></td></tr> }
+    </tbody></table></div>
+}</div>

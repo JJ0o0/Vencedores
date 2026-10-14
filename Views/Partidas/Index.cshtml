@@ -1,0 +1,16 @@
+@model IEnumerable<Vencedores.ViewModels.PartidaRow>
+@{
+    ViewData["Title"] = "Partidas";
+}
+<div class="page-heading"><div><p class="eyebrow">CALENDÁRIO</p><h1>Partidas</h1><p class="lead">Agende jogos e registre os resultados das competições.</p></div><a class="btn btn-primary" asp-action="Create">+ Nova partida</a></div>
+<div class="panel"><div class="panel-heading"><h2>Jogos cadastrados</h2><form method="get" class="search-form"><select name="ligaId" asp-items="ViewBag.Ligas"><option value="">Todas as ligas</option></select><select name="status"><option value="">Todos os status</option>@foreach (var s in new[] { "AGENDADA", "EM_ANDAMENTO", "FINALIZADA", "CANCELADA" }) { <option value="@s" selected="@(ViewBag.Status == s)">@s.Replace("_", " ")</option> }</select><button type="submit" class="btn btn-secondary">Filtrar</button></form></div>
+@if (!Model.Any())
+{
+    <div class="empty-state"><strong>Nenhuma partida encontrada</strong><p>Cadastre uma partida ou gere a tabela dentro de uma liga.</p></div>
+}
+else
+{
+    <div class="table-wrap"><table><thead><tr><th>Data</th><th>Liga</th><th>Confronto</th><th>Placar</th><th>Status</th><th class="actions-col">Ações</th></tr></thead><tbody>
+    @foreach (var j in Model) { <tr><td>@j.DataPartida.ToString("dd/MM/yy HH:mm")</td><td><a asp-controller="Ligas" asp-action="Details" asp-route-id="@j.IdLiga">@j.Liga</a></td><td><a class="strong-link" asp-action="Details" asp-route-id="@j.IdPartida">@j.Mandante <span class="muted">×</span> @j.Visitante</a></td><td class="strong-value">@(j.Status == "FINALIZADA" ? $"{j.PontosMandante} : {j.PontosVisitante}" : "—")</td><td><span class="status status-@j.Status.ToLowerInvariant()">@j.Status.Replace("_", " ")</span></td><td class="actions-col"><a asp-action="Details" asp-route-id="@j.IdPartida">Ver</a><a asp-action="Resultado" asp-route-id="@j.IdPartida">Placar</a><a asp-action="Edit" asp-route-id="@j.IdPartida">Editar</a></td></tr> }
+    </tbody></table></div>
+}</div>

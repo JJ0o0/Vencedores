@@ -1,0 +1,6 @@
+@model Vencedores.Models.Torneio
+@{
+    ViewData["Title"] = "Excluir torneio";
+}
+<div class="page-heading"><div><p class="eyebrow">COMPETIÇÕES</p><h1>Excluir torneio</h1></div></div>
+<div class="panel form-panel"><h2>Excluir @Model.Nome?</h2><p>Isso também removerá a liga e as inscrições caso não existam partidas. Torneios com partidas precisam ter seus jogos excluídos primeiro.</p><form asp-action="Delete" asp-route-id="@Model.IdTorneio" method="post" asp-antiforgery="true" class="form-actions"><a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model.IdTorneio">Cancelar</a><button class="btn btn-danger" type="submit">Excluir torneio</button></form></div>

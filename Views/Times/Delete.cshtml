@@ -1,0 +1,6 @@
+@model Vencedores.Models.Time
+@{
+    ViewData["Title"] = "Excluir time";
+}
+<div class="page-heading"><div><p class="eyebrow">EQUIPES</p><h1>Excluir time</h1></div></div>
+<div class="panel form-panel"><h2>Excluir @Model.Nome?</h2><p>Essa ação não pode ser desfeita. Times que possuem jogadores, inscrições ou partidas não poderão ser excluídos.</p><form asp-action="Delete" asp-route-id="@Model.IdTime" method="post" asp-antiforgery="true" class="form-actions"><a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model.IdTime">Cancelar</a><button type="submit" class="btn btn-danger">Excluir time</button></form></div>

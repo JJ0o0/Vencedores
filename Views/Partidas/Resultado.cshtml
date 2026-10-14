@@ -1,0 +1,11 @@
+@model Vencedores.ViewModels.ResultadoForm
+@{
+    var partida = (Vencedores.ViewModels.PartidaRow)ViewBag.Partida;
+    ViewData["Title"] = "Registrar placar";
+}
+<div class="page-heading"><div><p class="eyebrow">RESULTADO</p><h1>Registrar placar</h1><p class="lead">@partida.Liga · @partida.DataPartida.ToString("dd/MM/yyyy HH:mm")</p></div></div>
+<form asp-action="Resultado" asp-route-id="@Model.IdPartida" method="post" asp-antiforgery="true" class="panel form-panel">
+<input asp-for="IdPartida" type="hidden" /><div asp-validation-summary="ModelOnly" class="validation"></div>
+<div class="score-entry"><div class="score-entry-team"><label asp-for="PontosMandante">@partida.Mandante</label><input asp-for="PontosMandante" type="number" min="0" required placeholder="0" /><span asp-validation-for="PontosMandante" class="validation"></span></div><span class="versus">×</span><div class="score-entry-team"><label asp-for="PontosVisitante">@partida.Visitante</label><input asp-for="PontosVisitante" type="number" min="0" required placeholder="0" /><span asp-validation-for="PontosVisitante" class="validation"></span></div></div>
+<p class="soft-notice">Salvar o resultado finaliza a partida. É possível voltar e corrigir o placar sem duplicar pontos.</p>
+<div class="form-actions"><a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model.IdPartida">Cancelar</a><button class="btn btn-primary" type="submit">Salvar resultado</button></div></form>

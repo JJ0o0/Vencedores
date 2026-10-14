@@ -1,0 +1,18 @@
+@model Vencedores.ViewModels.PartidaRow
+@{
+    ViewData["Title"] = "Detalhes da partida";
+}
+<div class="page-heading"><div><p class="eyebrow">PARTIDA</p><h1>@Model.Liga</h1><p class="lead">@Model.DataPartida.ToString("dd/MM/yyyy 'às' HH:mm") · @Model.Sede</p></div><div class="button-row"><a class="btn btn-secondary" asp-action="Index">Voltar</a><a class="btn btn-secondary" asp-action="Edit" asp-route-id="@Model.IdPartida">Editar partida</a></div></div>
+<div class="scoreboard"><div class="scoreboard-top"><span class="status status-@Model.Status.ToLowerInvariant()">@Model.Status.Replace("_", " ")</span></div><div class="scoreboard-main"><div class="score-team"><span class="score-team-icon">@Model.Mandante.Substring(0,1).ToUpperInvariant()</span><strong>@Model.Mandante</strong><small>Mandante</small></div><div class="score-center"><strong>@(Model.Status == "FINALIZADA" ? Model.PontosMandante?.ToString() : "—") <span>:</span> @(Model.Status == "FINALIZADA" ? Model.PontosVisitante?.ToString() : "—")</strong><small>@(Model.Status == "FINALIZADA" ? "Placar final" : "Partida sem resultado")</small></div><div class="score-team"><span class="score-team-icon">@Model.Visitante.Substring(0,1).ToUpperInvariant()</span><strong>@Model.Visitante</strong><small>Visitante</small></div></div></div>
+<div class="panel"><div class="panel-heading"><h2>Gerenciar partida</h2></div><div class="button-row wrap-actions">
+@if (Model.Status != "CANCELADA")
+{
+    <a class="btn btn-primary" asp-action="Resultado" asp-route-id="@Model.IdPartida">@(Model.Status == "FINALIZADA" ? "Corrigir placar" : "Registrar placar")</a>
+    @if (Model.Status == "AGENDADA") { <form asp-action="Iniciar" asp-route-id="@Model.IdPartida" method="post" asp-antiforgery="true"><button type="submit" class="btn btn-secondary">Iniciar partida</button></form> }
+    <form asp-action="Cancelar" asp-route-id="@Model.IdPartida" method="post" asp-antiforgery="true" data-confirm="Cancelar esta partida? O placar deixará de contar para a classificação."><button type="submit" class="btn btn-secondary">Cancelar partida</button></form>
+}
+else
+{
+    <form asp-action="Reabrir" asp-route-id="@Model.IdPartida" method="post" asp-antiforgery="true"><button class="btn btn-primary" type="submit">Reabrir partida</button></form>
+}
+<a class="btn btn-danger-outline" asp-action="Delete" asp-route-id="@Model.IdPartida">Excluir partida</a></div></div>

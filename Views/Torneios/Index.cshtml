@@ -1,0 +1,16 @@
+@model IEnumerable<Vencedores.Models.Torneio>
+@{
+    ViewData["Title"] = "Torneios";
+}
+<div class="page-heading"><div><p class="eyebrow">COMPETIÇÕES</p><h1>Torneios</h1><p class="lead">Organize e acompanhe todas as suas competições.</p></div><a class="btn btn-primary" asp-action="Create">+ Novo torneio</a></div>
+<div class="panel"><div class="panel-heading"><h2>Seus torneios</h2></div>
+@if (!Model.Any())
+{
+    <div class="empty-state"><strong>Nenhum torneio cadastrado</strong><p>Crie um torneio para começar a organizar uma competição.</p><a class="btn btn-secondary" asp-action="Create">Criar torneio</a></div>
+}
+else
+{
+    <div class="table-wrap"><table><thead><tr><th>Torneio</th><th>Período</th><th>Status</th><th>Liga</th><th class="actions-col">Ações</th></tr></thead><tbody>
+    @foreach (var t in Model) { <tr><td><a class="strong-link" asp-action="Details" asp-route-id="@t.IdTorneio">@t.Nome</a></td><td>@t.DataInicio.ToString("dd/MM/yy") — @t.DataFinal.ToString("dd/MM/yy")</td><td><span class="status status-@t.Status.ToLowerInvariant()">@t.Status.Replace("_", " ")</span></td><td>@(t.Liga?.Nome ?? "Não criada")</td><td class="actions-col"><a asp-action="Details" asp-route-id="@t.IdTorneio">Ver</a><a asp-action="Edit" asp-route-id="@t.IdTorneio">Editar</a><a class="link-danger" asp-action="Delete" asp-route-id="@t.IdTorneio">Excluir</a></td></tr> }
+    </tbody></table></div>
+}</div>

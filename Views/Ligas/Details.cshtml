@@ -1,0 +1,58 @@
+@model Vencedores.ViewModels.LigaDetalhesViewModel
+@{
+    ViewData["Title"] = Model.Liga.Nome;
+}
+<div class="page-heading"><div><p class="eyebrow">LIGA DE PONTOS CORRIDOS</p><h1>@Model.Liga.Nome</h1><p class="lead"><a asp-controller="Torneios" asp-action="Details" asp-route-id="@Model.Liga.IdTorneio">@Model.Liga.IdTorneioNavigation.Nome</a> · @Model.Times.Count time(s) inscrito(s)</p></div><div class="button-row"><a class="btn btn-secondary" asp-action="Edit" asp-route-id="@Model.Liga.IdLiga">Editar liga</a><a class="btn btn-primary" asp-controller="Partidas" asp-action="Create" asp-route-ligaId="@Model.Liga.IdLiga">+ Agendar partida</a></div></div>
+<section class="panel"><div class="panel-heading"><div><h2>Classificação</h2><p>Atualizada automaticamente a partir dos placares finalizados.</p></div><a asp-action="Classificacao" asp-route-id="@Model.Liga.IdLiga" class="text-link">Ver tabela completa →</a></div>
+@if (Model.Classificacao.Any())
+{
+    <div class="table-wrap"><table><thead><tr><th>Pos.</th><th>Time</th><th>Pts</th><th>J</th><th>V</th><th>E</th><th>D</th><th>Pró</th><th>Contra</th><th>Saldo</th></tr></thead><tbody>
+    @{ var pos = 0; }
+    @foreach (var c in Model.Classificacao) { pos++; <tr><td><span class="rank">@pos</span></td><td><a class="strong-link" asp-controller="Times" asp-action="Details" asp-route-id="@c.IdTime">@c.TimeNome</a></td><td class="strong-value">@c.Pontos</td><td>@c.Jogos</td><td>@c.Vitorias</td><td>@c.Empates</td><td>@c.Derrotas</td><td>@c.PontosPro</td><td>@c.PontosContra</td><td>@c.SaldoPontos</td></tr> }
+    </tbody></table></div>
+}
+else
+{
+    <div class="empty-state"><strong>Nenhum time inscrito</strong><p>Inscreva pelo menos dois times para começar.</p></div>
+}</section>
+<div class="dashboard-grid"><section class="panel"><div class="panel-heading"><div><h2>Participantes</h2><p>Times inscritos nesta liga</p></div></div>
+@if (Model.Disponiveis.Any())
+{
+    <form asp-action="Inscrever" asp-route-id="@Model.Liga.IdLiga" method="post" asp-antiforgery="true" class="inline-form"><label class="sr-only" for="idTime">Time</label><select name="idTime" id="idTime" required><option value="">Escolha um time</option>@foreach (var t in Model.Disponiveis) { <option value="@t.IdTime">@t.Nome</option> }</select><button type="submit" class="btn btn-primary btn-small">Inscrever</button></form>
+}
+else
+{
+    <p class="panel-hint">Todos os times cadastrados já estão inscritos. <a asp-controller="Times" asp-action="Create">Cadastrar novo time</a></p>
+}
+<div class="list-stack">
+@foreach (var t in Model.Times) { <div class="list-row"><span class="mini-icon">@t.Nome.Substring(0,1).ToUpperInvariant()</span><span class="grow"><strong>@t.Nome</strong><small>@(t.Sigla ?? "Equipe")</small></span><form asp-action="Desinscrever" asp-route-id="@Model.Liga.IdLiga" method="post" asp-antiforgery="true" data-confirm="Remover esse time da liga?"><input type="hidden" name="idTime" value="@t.IdTime" /><button type="submit" class="link-danger subtle-button">Remover</button></form></div> }
+</div></section>
+<section class="panel"><div class="panel-heading"><div><h2>Gerar calendário</h2><p>Crie confrontos em turno único, com um jogo entre cada par de times.</p></div></div>
+@if (Model.Partidas.Any())
+{
+    <p class="panel-hint">Esta liga já tem partidas. Você pode adicionar jogos manualmente.</p><a class="btn btn-secondary" asp-controller="Partidas" asp-action="Create" asp-route-ligaId="@Model.Liga.IdLiga">Agendar partida</a>
+}
+else if (Model.Times.Count < 2)
+{
+    <p class="panel-hint">Inscreva pelo menos dois times para gerar o calendário.</p>
+}
+else if (!Model.Sedes.Any())
+{
+    <p class="panel-hint">Cadastre uma sede para gerar as partidas. <a asp-controller="Sedes" asp-action="Create">Cadastrar sede</a></p>
+}
+else
+{
+    <form asp-action="GerarJogos" asp-route-id="@Model.Liga.IdLiga" method="post" asp-antiforgery="true" class="embedded-form" data-confirm="Gerar as partidas desta liga?"><input type="hidden" name="IdLiga" value="@Model.Liga.IdLiga" /><div class="field"><label for="IdSede">Sede dos jogos</label><select name="IdSede" id="IdSede" required>@foreach (var sede in Model.Sedes) { <option value="@sede.IdSede">@sede.Nome</option> }</select></div><div class="field"><label for="DataInicio">Primeira rodada</label><input type="datetime-local" name="DataInicio" id="DataInicio" value="@DateTime.Today.AddDays(1).AddHours(15).ToString("yyyy-MM-ddTHH:mm")" required /></div><button class="btn btn-primary" type="submit">Gerar jogos</button><small class="field-help">Uma rodada a cada 7 dias, com jogos espaçados em 2 horas. Até 20 times.</small></form>
+}
+</section></div>
+<section class="panel"><div class="panel-heading"><div><h2>Partidas</h2><p>Agenda e resultados desta liga</p></div><a class="text-link" asp-controller="Partidas" asp-action="Index" asp-route-ligaId="@Model.Liga.IdLiga">Ver todas →</a></div>
+@if (!Model.Partidas.Any())
+{
+    <div class="empty-state"><strong>Sem jogos marcados</strong><p>Agende um confronto ou gere a tabela automaticamente.</p></div>
+}
+else
+{
+    <div class="table-wrap"><table><thead><tr><th>Data</th><th>Confronto</th><th>Placar</th><th>Status</th><th class="actions-col">Ações</th></tr></thead><tbody>
+    @foreach (var j in Model.Partidas.Take(10)) { <tr><td>@j.DataPartida.ToString("dd/MM/yy HH:mm")</td><td>@j.Mandante <span class="muted">×</span> @j.Visitante</td><td><strong>@(j.Status == "FINALIZADA" ? $"{j.PontosMandante} × {j.PontosVisitante}" : "—")</strong></td><td><span class="status status-@j.Status.ToLowerInvariant()">@j.Status.Replace("_", " ")</span></td><td class="actions-col"><a asp-controller="Partidas" asp-action="Details" asp-route-id="@j.IdPartida">Ver</a><a asp-controller="Partidas" asp-action="Resultado" asp-route-id="@j.IdPartida">Placar</a></td></tr> }
+    </tbody></table></div>
+}</section>

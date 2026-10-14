@@ -1,0 +1,11 @@
+@model Vencedores.ViewModels.SedeForm
+@{
+    var editar = Model.IdSede != 0;
+    ViewData["Title"] = editar ? "Editar sede" : "Nova sede";
+}
+<div class="page-heading"><div><p class="eyebrow">LOCAIS</p><h1>@ViewData["Title"]</h1><p class="lead">Informe onde as partidas serão realizadas.</p></div></div>
+<form asp-action="@(editar ? "Edit" : "Create")" asp-route-id="@(editar ? (int?)Model.IdSede : null)" method="post" asp-antiforgery="true" class="panel form-panel"><input asp-for="IdSede" type="hidden" /><div asp-validation-summary="ModelOnly" class="validation"></div>
+<div class="field"><label asp-for="Nome"></label><input asp-for="Nome" maxlength="150" /><span asp-validation-for="Nome" class="validation"></span></div>
+<div class="field"><label asp-for="Endereco"></label><input asp-for="Endereco" maxlength="255" /><span asp-validation-for="Endereco" class="validation"></span></div>
+<div class="field"><label asp-for="Capacidade"></label><input asp-for="Capacidade" type="number" min="0" /><span asp-validation-for="Capacidade" class="validation"></span></div>
+<div class="form-actions"><a class="btn btn-secondary" asp-action="Index">Cancelar</a><button class="btn btn-primary" type="submit">Salvar sede</button></div></form>

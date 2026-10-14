@@ -1,0 +1,18 @@
+@model IEnumerable<Vencedores.Models.ClassificacaoLiga>
+@{
+    var liga = (Vencedores.Models.Liga)ViewBag.Liga;
+    ViewData["Title"] = "Classificação";
+}
+<div class="page-heading"><div><p class="eyebrow">TABELA DE CLASSIFICAÇÃO</p><h1>@liga.Nome</h1><p class="lead">@liga.IdTorneioNavigation.Nome · Vitória 3 pontos · Empate 1 ponto</p></div><a class="btn btn-secondary" asp-action="Details" asp-route-id="@liga.IdLiga">Voltar à liga</a></div>
+<div class="panel"><div class="panel-heading"><h2>Classificação geral</h2><span class="topbar-tag">Atualização automática</span></div>
+@if (!Model.Any())
+{
+    <div class="empty-state"><strong>Nenhum participante</strong><p>Inscreva times na liga para visualizar a classificação.</p></div>
+}
+else
+{
+    <div class="table-wrap"><table><thead><tr><th>Pos.</th><th>Time</th><th>Pontos</th><th>Jogos</th><th>V</th><th>E</th><th>D</th><th>Pró</th><th>Contra</th><th>Saldo</th></tr></thead><tbody>
+    @{ var pos = 0; }
+    @foreach (var t in Model) { pos++; <tr><td><span class="rank">@pos</span></td><td><a class="strong-link" asp-controller="Times" asp-action="Details" asp-route-id="@t.IdTime">@t.TimeNome</a></td><td class="strong-value">@t.Pontos</td><td>@t.Jogos</td><td>@t.Vitorias</td><td>@t.Empates</td><td>@t.Derrotas</td><td>@t.PontosPro</td><td>@t.PontosContra</td><td>@t.SaldoPontos</td></tr> }
+    </tbody></table></div>
+}</div>

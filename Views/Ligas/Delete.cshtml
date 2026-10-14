@@ -1,0 +1,6 @@
+@model Vencedores.Models.Liga
+@{
+    ViewData["Title"] = "Excluir liga";
+}
+<div class="page-heading"><div><p class="eyebrow">PONTOS CORRIDOS</p><h1>Excluir liga</h1></div></div>
+<div class="panel form-panel"><h2>Excluir @Model.Nome?</h2><p>As inscrições desta liga serão removidas. Se houver partidas cadastradas, o banco impedirá a exclusão para proteger os resultados.</p><form asp-action="Delete" asp-route-id="@Model.IdLiga" method="post" asp-antiforgery="true" class="form-actions"><a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model.IdLiga">Cancelar</a><button class="btn btn-danger" type="submit">Excluir liga</button></form></div>
